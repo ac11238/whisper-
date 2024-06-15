@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RandomTel : MonoBehaviour
+public class teleporterCandle : MonoBehaviour
 {
     public Transform teleportLocation1;
     public Transform teleportLocation2;
@@ -15,6 +15,9 @@ public class RandomTel : MonoBehaviour
     public enemyFiring enemyFiring;
     public float newCameraSize2 = 3f;
     public EnemySpawner[] enemySpawners;
+    public Dropper[] droppers;
+    public Vector3 PlatformPlayerScale = new Vector3(5f, 5f, 1.0f); 
+    public float newCameraSize3 = 2f;
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -33,23 +36,28 @@ public class RandomTel : MonoBehaviour
         Transform destination = randomValue < 0.5f ? teleportLocation1 : teleportLocation2;
         Rigidbody2D playerRb = playerTransform.GetComponent<Rigidbody2D>();
 
+        foreach (BouncingObject bouncingObject in bouncingObjects)
+        {
+            bouncingObject.isBouncing = false;
+        }
+
         if (destination == teleportLocation1)
         {
-            playerRb.gravityScale = 0f;
-            player.SetBool("IsTopDown", TopDown);
+            playerRb.gravityScale = 1f;
+            player.SetBool("IsTopDown", false);
 
             camZoom cameraZoom = Camera.main.GetComponent<camZoom>();
             if (cameraZoom != null)
             {
-                cameraZoom.SetCameraSize(newCameraSize);
+                cameraZoom.SetCameraSize(newCameraSize3);
+            }
+
+            foreach (Dropper dropper in droppers)
+            {
+                dropper.active = true;
             }
 
             playerTransform.localScale = newPlayerScale;
-
-            foreach (BouncingObject bouncingObject in bouncingObjects)
-            {
-                bouncingObject.isBouncing = true;
-            }
         }
         else
         {

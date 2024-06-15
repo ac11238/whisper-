@@ -5,7 +5,7 @@ using TMPro;
 
 public class TypingEffect : MonoBehaviour
 {
-    public float typingSpeed = 0.05f; // Speed of typing
+    public float typingSpeed = 0.05f;
     private bool isTyping;
 
     public void StartTyping(TextMeshProUGUI uiText, string message)

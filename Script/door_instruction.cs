@@ -8,7 +8,7 @@ public class door_instruction : MonoBehaviour
     public Transform playerTransform;
     public float radius = 5.0f;
     public string message = "Middle for the norm, left for the unstable, right for the stable";
-    public TextMeshProUGUI uiText; // Shared TextMeshProUGUI component
+    public TextMeshProUGUI uiText; 
     private TypingEffect typingEffect;
 
     private bool isTyping = false;

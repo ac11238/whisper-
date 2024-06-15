@@ -33,7 +33,7 @@ public class StartDoor : MonoBehaviour
 
             foreach (BouncingObject bouncingObject in bouncingObjects)
             {
-                bouncingObject.isBouncing = false;
+                bouncingObject.isBouncing = true;
             }
         }
     }

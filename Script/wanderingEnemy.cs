@@ -7,8 +7,6 @@ public class wanderingEnemy : MonoBehaviour
     public bool attacking = false;
     public GameObject ammoPrefab;
     public Transform player;
-    public float attackDistance = 5f; 
-    public float attackRange = 3f; 
     public float launchForce = 10f;
     public float spawnInterval = 5f;
     private float timer = 0f;
@@ -23,6 +21,7 @@ public class wanderingEnemy : MonoBehaviour
     private float changeDirectionTimer;
     public Transform teleportLocation1;
     public Transform teleportLocation2;
+    public float minimumDistanceFromPlayer = 3f; 
 
     void Start()
     {
@@ -35,10 +34,8 @@ public class wanderingEnemy : MonoBehaviour
         {
             Controller = Player.GetComponent<controller>();
         }
-        else
-        {
-            Debug.LogError("Could not find controller object with tag 'Player'.");
-        }
+
+        attacking = true;
     }
 
     void Update()
@@ -55,16 +52,18 @@ public class wanderingEnemy : MonoBehaviour
 
         if (distanceToPlayer <= detectionRadius)
         {
-            if (distanceToPlayer <= attackDistance)
+            if (distanceToPlayer > minimumDistanceFromPlayer)
             {
-
                 ChasePlayer();
             }
             else
             {
-
-                Wander();
+                rb.velocity = Vector2.zero; 
             }
+        }
+        else
+        {
+            Wander();
         }
 
         if (attacking)
@@ -80,15 +79,19 @@ public class wanderingEnemy : MonoBehaviour
 
     void AttackFire()
     {
+        Debug.Log("AttackFire called"); 
         if (ammoPrefab != null && player != null)
         {
             Vector2 direction = (player.position - transform.position).normalized;
-            GameObject spawnedAmmo = Instantiate(ammoPrefab, transform.position, Quaternion.identity);
+            Vector2 spawnPosition = (Vector2)transform.position + direction * 1.5f; 
+
+            GameObject spawnedAmmo = Instantiate(ammoPrefab, spawnPosition, Quaternion.identity);
             Rigidbody2D rb = spawnedAmmo.GetComponent<Rigidbody2D>();
 
             if (rb != null)
             {
                 rb.AddForce(direction * launchForce, ForceMode2D.Impulse);
+                Debug.Log("Ammo fired"); 
             }
         }
     }
@@ -105,7 +108,14 @@ public class wanderingEnemy : MonoBehaviour
     private void Die()
     {
         Destroy(gameObject);
-        Controller.IncrementKillCount();
+        if (Controller != null)
+        {
+            Controller.IncrementKillCount();
+        }
+        else
+        {
+            Debug.LogError("Controller is null");
+        }
     }
 
     void ChangeDirection()
@@ -120,10 +130,10 @@ public class wanderingEnemy : MonoBehaviour
 
     void ChasePlayer()
     {
-        Vector2 targetPosition = player.position + (transform.position - player.position).normalized * attackRange;
-        
-        Vector2 direction = (targetPosition - (Vector2)transform.position).normalized;
-        rb.velocity = direction * speed;
+        Vector2 direction = (player.position - transform.position).normalized;
+        Vector2 targetPosition = (Vector2)player.position - direction * minimumDistanceFromPlayer;
+        Vector2 moveDirection = (targetPosition - (Vector2)transform.position).normalized;
+        rb.velocity = moveDirection * speed;
     }
 
     void OnCollisionEnter2D(Collision2D collision)

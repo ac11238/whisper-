@@ -19,21 +19,30 @@ public class BouncingObject : MonoBehaviour
         }
 
         rb.gravityScale = 0;
-
-        Vector2 initialDirection = Random.insideUnitCircle.normalized;
-        rb.velocity = initialDirection * speed;
+        rb.drag = 0; 
+        rb.angularDrag = 0;
+        rb.velocity = Vector2.zero;
     }
 
     void Update()
     {
-        if (!isBouncing)
+        if (isBouncing)
         {
-            rb.velocity = Vector2.zero;
+            if (rb.velocity == Vector2.zero)
+            {
+                Vector2 initialDirection = Random.insideUnitCircle.normalized;
+                rb.velocity = initialDirection * speed;
+            }
+            else
+            {
+                rb.velocity = rb.velocity.normalized * speed;
+            }
         }
         else
         {
-            rb.velocity = rb.velocity.normalized * speed;
+            rb.velocity = Vector2.zero;
         }
+
     }
 
     void OnCollisionEnter2D(Collision2D collision)

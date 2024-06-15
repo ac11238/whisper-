@@ -28,12 +28,12 @@ public class StartDoor3 : MonoBehaviour
                 spawner.spawning = true;
             }
 
-                camZoom cameraZoom = Camera.main.GetComponent<camZoom>();
+            camZoom cameraZoom = Camera.main.GetComponent<camZoom>();
 
-                if (cameraZoom != null)
-                {
-                    cameraZoom.SetCameraSize(newCameraSize);
-                }
+            if (cameraZoom != null)
+            {
+                cameraZoom.SetCameraSize(newCameraSize);
+            }
             }
         }
     }

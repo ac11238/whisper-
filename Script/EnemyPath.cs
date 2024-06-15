@@ -35,7 +35,7 @@ public class EnemyPath : MonoBehaviour
     {
         if (player == null || PlayerStat == null)
         {
-            return; // Exit Update if player or PlayerStat is not initialized
+            return; 
         }
 
         if (PlayerStat.currentAwakeness >= 100)

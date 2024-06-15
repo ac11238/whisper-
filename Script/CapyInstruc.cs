@@ -1,12 +1,13 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class bol_instruct : MonoBehaviour
+public class CapyInstruc : MonoBehaviour
 {
     public Transform playerTransform;
-    public float radius = 5.0f;
-    public string message = "Where you are. Who you are. I do not have an answer.";
+    public float radius = 3.0f;
+    public string message = "Find the grave above the ground, that belong to the goddess. Clicking shift + w + space will give you a massive jump boost.";
     public TextMeshProUGUI uiText; 
     private TypingEffect typingEffect;
 
@@ -18,6 +19,7 @@ public class bol_instruct : MonoBehaviour
         {
             uiText.text = "";
         }
+
         typingEffect = gameObject.AddComponent<TypingEffect>();
     }
 

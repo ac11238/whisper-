@@ -1,12 +1,13 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class bol_instruct : MonoBehaviour
+public class radish_instruc : MonoBehaviour
 {
     public Transform playerTransform;
     public float radius = 5.0f;
-    public string message = "Where you are. Who you are. I do not have an answer.";
+    public string message = "Left click to shoot an arrow at the enemy. Kill 50 slimes to enter the next stage. Now shoot me.";
     public TextMeshProUGUI uiText; 
     private TypingEffect typingEffect;
 
@@ -18,6 +19,7 @@ public class bol_instruct : MonoBehaviour
         {
             uiText.text = "";
         }
+
         typingEffect = gameObject.AddComponent<TypingEffect>();
     }
 
@@ -40,6 +42,14 @@ public class bol_instruct : MonoBehaviour
                 typingEffect.StopTyping(uiText);
                 isTyping = false;
             }
+        }
+    }
+
+    void OnDestroy()
+    {
+        if (uiText != null)
+        {
+            uiText.text = "";
         }
     }
 }
